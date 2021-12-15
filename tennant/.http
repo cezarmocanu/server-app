@@ -1,0 +1,39 @@
+POST http://localhost:3000/authorization/login
+Content-Type: application/json
+
+{
+    "email": "cezarmocanu9@email.com",
+    "password": "123456"
+}
+
+### unmodified token
+
+POST http://localhost:3000/authorization/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlhdCI6MTYzOTQ4MTQyN30.Uell9B0s2eAsurb-2BRryxwAC7J6KufP0I6IvWWfwGg
+
+### modified token
+
+POST http://localhost:3000/authorization/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2Mzk0ODE0Mjd9.ell9B0s2eAsuBRoC7J6KIy9ZZw==
+
+### modified token
+
+POST http://localhost:3000/authorization/register
+Content-Type: application/json
+
+{
+    "firstName": "Cezar",
+    "lastName": "Mocanu",
+    "email": "cezarmocanu9@email.com",
+    "password": "123456"
+}
+
+### authorized to make tennant action
+
+GET http://localhost:3001/tennant/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlhdCI6MTYzOTUyMjMxOX0.JHnPViBBWvDeMYqjwqylwq1NqiOuo9hB197DAOQwIBQ
+
+### NOT authorized to make tennant action
+
+GET http://localhost:3001/tennant/test
+Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlhdCI6MTYzOTUyMDYyN30.aQFvXkjQhmf1O1RxKXKS-EnDaa3Rqe5AjCl5xOdTjXc
