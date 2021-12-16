@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthorizationService } from './authorization.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PermissionCertificate } from 'src/permission-certificate/permission-certificate.entity';
+import { Permission } from 'src/permission/permission.entity';
 import { AuthorizationController } from './authorization.controller';
-import { ConfigModule } from '@nestjs/config';
-import { UserModule } from 'src/user/user.module';
+import { AuthorizationService } from './authorization.service';
 
 @Module({
-  imports: [ConfigModule, UserModule],
-  providers: [AuthorizationService],
+  //TODO move permission and cert related to permissions service/module
+  imports:[TypeOrmModule.forFeature([PermissionCertificate, Permission])],
   controllers: [AuthorizationController],
+  providers: [AuthorizationService]
 })
 export class AuthorizationModule {}

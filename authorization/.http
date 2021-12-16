@@ -1,10 +1,13 @@
-POST http://localhost:3000/authorization/login
+POST http://localhost:3000/authentication/login
 Content-Type: application/json
 
 {
-    "email": "cezarmocanu9@email.com",
+    "email": "cezarmocanu@email.com",
     "password": "123456"
 }
+
+###
+POST http://localhost:3000/authorization/verify
 
 ### unmodified token
 

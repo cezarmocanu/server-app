@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RegisterUserDTO } from 'src/authorization/dto/register.dto';
+import { RegisterUserDTO } from 'src/authentication/dto/register.dto';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { LoginUserDTO } from 'src/authorization/dto/login.dto copy';
+import { LoginUserDTO } from 'src/authentication/dto/login.dto copy';
 
 @Injectable()
 export class UserService {
