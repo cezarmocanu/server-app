@@ -1,26 +1,35 @@
-import { Controller, ForbiddenException, Post, Res, UnauthorizedException } from '@nestjs/common';
+import { Controller, ForbiddenException, Post, Res, UnauthorizedException,Headers, Body } from '@nestjs/common';
 import {Response} from 'express';
+import { AuthenticationService } from 'src/authentication/authentication.service';
 import { PermissionCertificate } from 'src/permission-certificate/permission-certificate.entity';
 import { Permission } from 'src/permission/permission.entity';
 
-import { UserService } from 'src/user/user.service';
 import { AuthorizationService } from './authorization.service';
+import { AuthorizationRequestDTO } from './dto/authorization-request.dto';
 
 @Controller('authorization')
 export class AuthorizationController {
     constructor(
-        private authorizationService: AuthorizationService
+        private authorizationService: AuthorizationService,
+        private authenticationService: AuthenticationService
       ) {}
 
     @Post('/verify')
-    async verify(@Res({ passthrough: true }) res: Response){
+    async verify(
+        @Headers() headers,
+        @Body() body: AuthorizationRequestDTO,
+        @Res({ passthrough: true }) res: Response
+    ){
+        if (!this.authenticationService.authorizeRequest(headers)){
+            return new UnauthorizedException();
+        }
 
-        //TODO pass propper parameters from request
-        //TODO check if the user is authenticated
-        const userId = 10;
-        const serviceUUID = "financial";
-        const resource = "salaries";
-        const right = "READ";
+        const {
+            userId,
+            serviceUUID,
+            resource,
+            right
+        } = body;
 
         const certificate: PermissionCertificate = await this.authorizationService.findCertificate(userId, serviceUUID);
         if (!certificate) {

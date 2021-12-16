@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 
@@ -21,5 +21,23 @@ export class AuthenticationService {
     } catch (error) {
       return false;
     }
+  }
+
+  authorizeRequest(headers){
+    if (!headers.authorization) {
+      return false;
+    }
+
+    const [_, token] = headers.authorization.split(' ');
+
+    if (!token) {
+      return false;
+    }
+
+    if (!this.verifyJwt(token)) {
+      return false;
+    }
+
+    return true;
   }
 }

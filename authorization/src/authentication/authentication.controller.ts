@@ -70,20 +70,10 @@ export class AuthenticationController {
 
   @Post('/verify')
   verify(@Headers() headers, @Res({ passthrough: true }) res: Response) {
-    if (!headers.authorization) {
+    if (!this.authenticationService.authorizeRequest(headers)){
       return new UnauthorizedException();
     }
-
-    const [_, token] = headers.authorization.split(' ');
-
-    if (!token) {
-      throw new UnauthorizedException();
-    }
-
-    if (!this.authenticationService.verifyJwt(token)) {
-      throw new UnauthorizedException();
-    }
-
+    
     res.status(HttpStatus.OK);
     return {
       message: 'Authorized',
